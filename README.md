@@ -259,12 +259,9 @@ CropVerse is developed by a dedicated cross-functional team of six engineers and
 
 | Role | Name | Responsibilities |
 |------|------|------------------|
-| 💻 **Software Architect & Full-Stack Engineer ** | **Atharv Sabde** | End-to-end software development: Firebase cloud functions architecture, real-time analytics engine, RESTful API design, web dashboard development, AI chatbot integration, database schema design, authentication & security implementation, frontend–backend orchestration |
-| ⚡ **Hardware Systems Engineer** | **Vaidehi Musale** | IoT infrastructure design and deployment: sensor network architecture, Arduino/RPi controller programming, HVAC automation systems integration, relay control logic, power management (solar + battery), field deployment coordination, hardware–software interface protocols |
-| 🔬 **Hardware Engineering & Research Specialist** | **Bhumika Pise** | Sensor calibration and testing, environmental control system optimization, preservation technology research (eugenol, thymol, PCO), agricultural domain analysis, post-harvest storage methodologies, hardware component selection and procurement, prototype testing and validation |
+| 🔬 **Hardware Engineering & Research Specialist** | **Deep Kanade** | Sensor calibration and testing, environmental control system optimization, preservation technology research (eugenol, thymol, PCO), agricultural domain analysis, post-harvest storage methodologies, hardware component selection and procurement, prototype testing and validation |
 | 📋 **Project Coordination & Agricultural Research** | **Rohit Rode** | Project management and strategic planning, stakeholder communication, agricultural domain research, farmer requirement analysis, market feasibility studies, documentation and presentation, compliance and regulatory research, team coordination and resource planning |
 | 🔧 **Systems Integration Engineer** | **Rahul Mathe** | Hardware–software integration troubleshooting, system testing and quality assurance, research validation and experimentation, deployment assistance, cross-subsystem performance optimization, technical documentation, backup development support |
-| ⚙️ **Hardware Operations Specialist** | **Mayuri More** | Hardware assembly and installation support, IoT device configuration assistance, field testing and diagnostics, sensor maintenance protocols, equipment logistics coordination, hardware documentation, operational support for deployment activities |
 
 
 
