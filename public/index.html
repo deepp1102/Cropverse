@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Onion Management System</title>
+
+    <!-- CDN dependencies (same as original) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300">
+    <div class="flex h-screen">
+        <aside class="w-64 bg-white dark:bg-slate-800 shadow-md flex-shrink-0 flex flex-col">
+            <div class="h-16 flex items-center justify-center border-b border-slate-200 dark:border-slate-700">
+                <i data-feather="grid" class="text-cyan-600"></i>
+                <h1 class="text-xl font-bold ml-2">CropVerse</h1>
+            </div>
+            <nav class="flex-1 px-4 py-6 space-y-2">
+                <a href="#dashboard" class="nav-link flex items-center px-4 py-2 rounded-md text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-feather="home" class="w-5 h-5 mr-3"></i> Dashboard
+                </a>
+                <a href="#analytics" class="nav-link flex items-center px-4 py-2 rounded-md text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-feather="bar-chart-2" class="w-5 h-5 mr-3"></i> Analytics
+                </a>
+                <a href="#help" class="nav-link flex items-center px-4 py-2 rounded-md text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-feather="help-circle" class="w-5 h-5 mr-3"></i> Help & Resources
+                </a>
+                <a href="#chatbot" class="nav-link flex items-center px-4 py-2 rounded-md text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-feather="message-circle" class="w-5 h-5 mr-3"></i> AI Chatbot
+                </a>
+                <a href="#settings" class="nav-link flex items-center px-4 py-2 rounded-md text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-feather="settings" class="w-5 h-5 mr-3"></i> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-end px-6">
+                <div class="relative">
+                    <button id="bell-icon" class="relative text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400">
+                        <i data-feather="bell"></i>
+                        <span id="notification-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
+                    </button>
+                    <div id="notification-panel" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden z-10">
+                        <div class="p-4 font-semibold border-b border-slate-200 dark:border-slate-700">Notifications</div>
+                        <div id="notification-list" class="divide-y divide-slate-200 dark:divide-slate-700 max-h-96 overflow-y-auto">
+                            <!-- Notifications will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-100 dark:bg-slate-900 p-6">
+                
+                <div id="page-dashboard" class="page-content">
+                    <h2 class="text-2xl font-bold mb-6">Real-time Dashboard</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                        <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-5">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-cyan-100 dark:bg-cyan-900">
+                                    <i data-feather="thermometer" class="text-cyan-600 dark:text-cyan-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Temperature</p>
+                                    <p id="temp-value" class="text-2xl font-bold">24.5 °C</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-5">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-emerald-100 dark:bg-emerald-900">
+                                    <i data-feather="droplet" class="text-emerald-600 dark:text-emerald-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Humidity</p>
+                                    <p id="humidity-value" class="text-2xl font-bold">68 %</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-5">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-amber-100 dark:bg-amber-900">
+                                    <i data-feather="wind" class="text-amber-600 dark:text-amber-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Methane</p>
+                                    <p id="methane-value" class="text-2xl font-bold">5 ppm</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-5">
+                             <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-violet-100 dark:bg-violet-900">
+                                    <i data-feather="activity" class="text-violet-600 dark:text-violet-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Other Gases</p>
+                                    <p id="gas-value" class="text-2xl font-bold">12 ppm</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-5">
+                             <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-rose-100 dark:bg-rose-900">
+                                    <i data-feather="loader" class="text-rose-600 dark:text-rose-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Exhaust Fan</p>
+                                    <p id="fan-status" class="text-2xl font-bold text-green-500">ON</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 bg-white dark:bg-slate-800 rounded-lg shadow p-6">
+                         <div class="chart-container" style="position: relative; height:40vh; width:100%; max-width: none;">
+                            <canvas id="realtimeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-analytics" class="page-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">Historical Analytics</h2>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow">
+                        <div class="mb-4">
+                            <label for="datepicker" class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Select a date to view historical data:</label>
+                            <input type="text" id="datepicker" class="bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md p-2 w-full md:w-1/2 lg:w-1/3">
+                        </div>
+                        <p id="analytics-date-display" class="mb-4 text-lg">Showing data for: <span class="font-semibold">Today</span></p>
+                        <div class="chart-container" style="position: relative; height:40vh; width:100%; max-width: none;">
+                            <canvas id="historicalChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="page-help" class="page-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">Help & Resources</h2>
+                    <div class="space-y-6">
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow">
+                            <h3 class="text-xl font-semibold mb-4">Frequently Asked Questions (FAQs)</h3>
+                            <div class="space-y-4" id="faq-container">
+                                <!-- FAQs will be injected here -->
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow">
+                            <h3 class="text-xl font-semibold mb-4">Reference Materials</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+                                    <h4 class="font-semibold mb-2">Optimal Storage Conditions</h4>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">Learn about the ideal temperature, humidity, and airflow for long-term onion storage.</p>
+                                    <button class="text-cyan-600 dark:text-cyan-400 text-sm font-semibold hover:underline">Watch Video</button>
+                                    <button class="ml-4 text-cyan-600 dark:text-cyan-400 text-sm font-semibold hover:underline">Read Article</button>
+                                </div>
+                                <div class="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+                                    <h4 class="font-semibold mb-2">Identifying Spoilage</h4>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">A guide to recognizing early signs of rot, mold, and sprouting in stored onions.</p>
+                                    <button class="text-cyan-600 dark:text-cyan-400 text-sm font-semibold hover:underline">Watch Video</button>
+                                    <button class="ml-4 text-cyan-600 dark:text-cyan-400 text-sm font-semibold hover:underline">Read Article</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-chatbot" class="page-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">AI Assistant</h2>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow h-[70vh] flex flex-col">
+                        <div id="chat-messages" class="flex-1 p-6 overflow-y-auto">
+                            <div class="flex items-start gap-3">
+                                <div class="p-2 rounded-full bg-cyan-100 dark:bg-cyan-900 self-start">
+                                    <i data-feather="cpu" class="text-cyan-600 dark:text-cyan-400 w-5 h-5"></i>
+                                </div>
+                                <div class="bg-slate-100 dark:bg-slate-700 rounded-lg p-3 max-w-lg">
+                                    <p>Hello! I'm your OnionCtrl AI assistant. How can I help you today? You can ask me about storage conditions, how to interpret data, or features of this application.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-slate-200 dark:border-slate-700 p-4">
+                            <form id="chat-form" class="flex items-center gap-4">
+                                <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 bg-slate-100 dark:bg-slate-700 border-transparent focus:ring-cyan-500 focus:border-cyan-500 block w-full rounded-md" autocomplete="off">
+                                <button type="submit" class="bg-cyan-600 text-white rounded-md p-2 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 dark:focus:ring-offset-slate-800">
+                                    <i data-feather="send" class="w-5 h-5"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-settings" class="page-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">Settings</h2>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow space-y-8">
+                        <div>
+                            <h3 class="text-lg font-medium">Appearance</h3>
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="flex items-center justify-between">
+                                    <label for="theme-toggle" class="text-sm font-medium">Dark Mode</label>
+                                    <button id="theme-toggle" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 dark:focus:ring-offset-slate-800 bg-slate-200">
+                                        <span class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                                    </button>
+                                </div>
+                                <div>
+                                    <label for="font-size" class="block text-sm font-medium mb-1">Font Size</label>
+                                    <select id="font-size" class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md p-2">
+                                        <option value="14px">Small</option>
+                                        <option value="16px" selected>Medium</option>
+                                        <option value="18px">Large</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="font-family" class="block text-sm font-medium mb-1">Font Family</label>
+                                    <select id="font-family" class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md p-2">
+                                        <option value="'Inter', sans-serif" selected>Inter (Sans-serif)</option>
+                                        <option value="'Georgia', serif">Georgia (Serif)</option>
+                                        <option value="'Courier New', monospace">Courier (Monospace)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                             <h3 class="text-lg font-medium">Accessibility</h3>
+                             <div class="mt-4 flex items-center justify-between">
+                                <label for="colorblind-mode" class="text-sm font-medium">Colorblind Friendly Chart Colors</label>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                  <input type="checkbox" id="colorblind-mode" value="" class="sr-only peer">
+                                  <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 dark:peer-focus:ring-cyan-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-cyan-600"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                         <div>
+                             <h3 class="text-lg font-medium">Language</h3>
+                             <div class="mt-4">
+                                 <select id="language-select" class="w-full md:w-1/2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md p-2">
+                                    <option value="en" selected>English</option>
+                                    <option value="es">Español</option>
+                                    <option value="fr">Français</option>
+                                    <option value="hi">हिन्दी</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Local JS - Order matters! -->
+    <script src="js/config.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+flask
+firebase-admin
+numpy
+pandas
+firebase-functions
+twilio
+anthropic
+reportlab
+python-dotenv

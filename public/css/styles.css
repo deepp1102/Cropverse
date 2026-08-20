@@ -1,0 +1,45 @@
+:root {
+    --font-size: 16px;
+    --font-family: 'Inter', sans-serif;
+}
+
+body {
+    font-size: var(--font-size);
+    font-family: var(--font-family);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+.dark ::-webkit-scrollbar-track { background: #1e293b; }
+::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }
+::-webkit-scrollbar-thumb:hover { background: #64748b; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+/* Pikaday overrides (dark mode aware) */
+.pika-single {
+    background-color: #fff;
+    border-color: #e2e8f0;
+}
+.dark .pika-single {
+    background-color: #334155;
+    border-color: #475569;
+    color: #e2e8f0;
+}
+.dark .pika-select-year, .dark .pika-select-month { color: #e2e8f0; background-color: #475569;}
+.dark .pika-button { color: #e2e8f0; }
+.dark .is-today .pika-button { color: #38bdf8; }
+.dark .is-selected .pika-button { background-color: #0ea5e9; box-shadow: none; }
+.dark .pika-table th { color: #cbd5e1; }
+
+/* Small utility to ensure chart containers stretch correctly */
+.chart-container { width: 100%; }
+
+/* Make sure hidden class hides appropriately when JS toggles it */
+.hidden { display: none !important; }
+
+/* small responsive helpers if you want to tweak later */
+@media (max-width: 768px) {
+    aside { display: none; } /* keep behavior same as original layout— you can implement a mobile nav later */
+}
